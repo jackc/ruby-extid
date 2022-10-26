@@ -1,0 +1,10 @@
+module ExtID
+  VERSION: String
+  # See the writing guide of rbs: https://github.com/ruby/rbs#guides
+
+  def initialize: (String prefix, String key) -> void
+
+  def encode: (Integer n) -> String
+
+  def decode: (String s) -> Integer
+end
