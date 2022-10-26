@@ -1,33 +1,38 @@
 # ExtID
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/extid`. To experiment with that code, run `bin/console` for an interactive prompt.
+It can be valuable to internally use a serial integer as an ID without revealing that ID to the outside world. extid
+uses AES-128 to convert to and from an external ID that cannot feasibly be decoded without the secret key.
 
-TODO: Delete this and the text above, and describe your gem
+This prevents outsiders from quantifying the usage of your application by observing the rate of increase of IDs as well
+as provides protection against brute force crawling of all resources.
 
 ## Installation
 
 Install the gem and add to the application's Gemfile by executing:
 
-    $ bundle add extid
+```
+$ bundle add extid
+```
 
 If bundler is not being used to manage dependencies, install the gem by executing:
 
-    $ gem install extid
+```
+$ gem install extid
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+require 'extid'
 
-## Development
+prefix = "user"
+key = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].pack('C*')
+type = ExtID::Type.new prefix, key
+type.encode(1) # => "user_13189a6ae4ab07ae70a3aabd30be99de"
+type.decode("user_13189a6ae4ab07ae70a3aabd30be99de") # => 1
+```
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+## Other Implementations
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/extid.
-
-## License
-
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+* [Go](https://github.com/jackc/go-extid)
+* [PostgreSQL](https://github.com/jackc/pg-extid)
